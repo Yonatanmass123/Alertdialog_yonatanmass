@@ -1,13 +1,16 @@
 package com.example.alertdialog;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -26,23 +29,57 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        SharedPreferences sharedPreferences = getSharedPreferences( "ExampleApp", MODE_PRIVATE);
-        Button bSave = findViewById(R.id.bSave);
-        TextView TVName = findViewById(R.id.TVName);
-        EditText etName = findViewById(R.id.etUserInput);
+        SharedPreferences sharedPreferences = getSharedPreferences("ExampleApp", MODE_PRIVATE);
+        Button btnSD = findViewById(R.id.btnSD);
+        EditText editText = findViewById(R.id.editText);
 
-        TVName.setText(sharedPreferences.getString("user name", "waiting for your name"));
 
-        bSave.setOnClickListener(new View.OnClickListener() {
+        editText = findViewById(R.id.editText);
+        btnSD = findViewById(R.id.btnSD);
+
+        EditText finalEditText = editText;
+        btnSD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                String name = etName.getText().toString();
-                editor.putString("username", name);
-                editor.apply();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Wow")
+                        .setMessage("Awesome")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                String userInput = finalEditText.getText().toString();
+                                Toast.makeText(MainActivity.this, "You wrote: " + userInput, Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
             }
         });
-
     }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
